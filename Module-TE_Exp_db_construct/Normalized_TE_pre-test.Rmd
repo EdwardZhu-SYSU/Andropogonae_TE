@@ -1,0 +1,20 @@
+---
+title: "Normalized_TE_pre-test"
+author: "Edward Zhu"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+TE_exp_raw = read.csv2('./Normalized_TE/SRR572017_TE.csv', sep=",", header = T)
+
+# Detect singlr-copy TEs
+TE_exp_raw$to_del=ifelse(str_detect(TE_exp_raw$TE_id,"Seq"), 1, 0)
+
+# Delete single-copy TEs
+TE_exp_rawnew = TE_exp_raw[-which(TE_exp_raw$to_del == 1),]
+rm(TE_exp_raw)
+
+# Remove col 'fam_length' and 'to_del'
+TE_exp_rawnew = TE_exp_rawnew[,-c(3,ncol(TE_exp_rawnew))]
+```
